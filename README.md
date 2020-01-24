@@ -11,7 +11,7 @@ Will require [a recent build of KoLMafia](http://builds.kolmafia.us/job/Kolmafia
 
 ## Usage
 
-To get a readout of current libram summon values, simply enter `libramvalues` in the gCLI.
+To get a readout of current libram summon values, simply enter `libramvalue` in the gCLI.
 
 In order to actually use the script to burn mana on librams, I recommend creating an alias
 by entering the following in the gCLI:
