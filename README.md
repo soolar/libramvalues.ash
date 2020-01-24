@@ -23,3 +23,6 @@ Then  you can simply enter `libramburn` in the gCLI whenever you want to burn ma
 You can adjust the above alias as you see fit, it current burns down to 10% of you max mp.
 If you want to burn down to a set amount of MP instead, just replace `0.1 * my_maxmp()` with
 `1000`, for example.
+
+You can also add a call to `libramburn` as an unconditional trigger in a mood to automatically
+burn mp on optimal libram summoning as you adventure.
