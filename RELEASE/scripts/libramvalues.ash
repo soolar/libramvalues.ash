@@ -155,7 +155,15 @@ void main()
 {
 	print("CURRENT average libram summon values.", "blue");
 	print("This may change as you summon uncommons, unless otherwise noted", "blue");
+	int [int] sorted;
 	for(int id = 0; id < LIBRAM_COUNT; ++id)
+	{
+		sorted[id] = id;
+	}
+
+	sort sorted by libram_value(value);
+
+	foreach i, id in sorted
 	{
 		float value = libram_value(id);
 		skill libram_skill = libram_id_to_skill(id);
