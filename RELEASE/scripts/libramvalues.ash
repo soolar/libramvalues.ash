@@ -1,4 +1,5 @@
 script "libramvalue.ash";
+notify "soolar the second";
 
 int LIBRAM_CANDY_HEARTS = 0;
 boolean [item] ITEMS_CANDY_HEARTS = $items[white candy heart, pink candy heart, orange candy heart, lavender candy heart, yellow candy heart, green candy heart];
