@@ -1,4 +1,4 @@
-script "libramvalue.ash";
+script "libramvalues.ash";
 notify "soolar the second";
 
 int LIBRAM_CANDY_HEARTS = 0;
