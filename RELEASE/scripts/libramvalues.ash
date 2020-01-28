@@ -132,7 +132,7 @@ float libram_value_floor(int libram)
 	}
 }
 
-skill most_profitable_libram(boolean owned_only)
+skill most_profitable_libram(boolean owned_only, boolean worst_case)
 {
 	int best = -1;
 	int best_value = 0;
@@ -142,7 +142,7 @@ skill most_profitable_libram(boolean owned_only)
 		{
 			continue;
 		}
-		float value = libram_value(id);
+		float value = (worst_case ? libram_value_floor(id) : libram_value(id));
 		if(value > best_value)
 		{
 			best_value = value;
@@ -152,11 +152,41 @@ skill most_profitable_libram(boolean owned_only)
 	return libram_id_to_skill(best);
 }
 
+skill most_profitable_libram(boolean owned_only)
+{
+	return most_profitable_libram(owned_only, false);
+}
+
+int libram_casting_cost(int casting)
+{
+	return max(1 + casting * (casting - 1) / 2 + mana_cost_modifier(), 1);
+}
+
+int libram_castings_possible(int mp_leftover)
+{
+	int available_mp = my_mp() - mp_leftover;
+	int casting = get_property("libramSummons").to_int() + 1;
+	int casts = 0;
+	while(available_mp >= libram_casting_cost(casting))
+	{
+		available_mp -= libram_casting_cost(casting);
+		++casting;
+		++casts;
+	}
+	return casts;
+}
+
 void libram_burn_down_to(int mp)
 {
 	skill best = most_profitable_libram(true);
 	while(best != $skill[none] && my_mp() - mp >= mp_cost(best))
 	{
+		// if the best is also the best in the worst case scenario, just cast it as many times as you can all at once
+		if(best == most_profitable_libram(true, true))
+		{
+			use_skill(libram_castings_possible(mp), best);
+			break;
+		}
 		use_skill(1, best);
 		best = most_profitable_libram(true);
 	}
