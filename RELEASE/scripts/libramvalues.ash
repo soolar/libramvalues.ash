@@ -178,14 +178,15 @@ void main()
 	{
 		float value = libram_value(id);
 		skill libram_skill = libram_id_to_skill(id);
-		string out = libram_skill.to_string();
-		out += ': <span style="color: ';
-		out += (have_skill(libram_skill) ? 'green' : 'red');
-		out += ';">';
-		out += value;
-		out += '</span> (';
-		out += (libram_is_static_value(id) ? 'will not change today' : ('approaching ' + libram_value_floor(id)));
-		out += ')';
-		print_html(out);
+		buffer out;
+		out.append(libram_skill.to_string());
+		out.append(': <span style="color: ');
+		out.append(have_skill(libram_skill) ? 'green' : 'red');
+		out.append(';">');
+		out.append(value);
+		out.append('</span> (');
+		out.append(libram_is_static_value(id) ? 'will not change today' : ('approaching ' + libram_value_floor(id)));
+		out.append(')');
+		print_html(out.to_string());
 	}
 }
