@@ -121,6 +121,17 @@ float libram_value(int libram)
 	return 0;
 }
 
+float libram_value_floor(int libram)
+{
+	switch(libram)
+	{
+	case LIBRAM_PARTY_FAVORS: return average_value(ITEMS_PARTY_FAVORS_COMMON);
+	case LIBRAM_BRICKOS: return 3 * mall_price($item[BRICKO brick]);
+	case LIBRAM_TAFFY: return average_value(ITEMS_TAFFY_COMMON);
+	default: return libram_value(libram);
+	}
+}
+
 skill most_profitable_libram(boolean owned_only)
 {
 	int best = -1;
@@ -167,6 +178,14 @@ void main()
 	{
 		float value = libram_value(id);
 		skill libram_skill = libram_id_to_skill(id);
-		print_html(libram_skill.to_string() + ': <span style="color: ' + (have_skill(libram_skill) ? 'green' : 'red') + ';">' + value + "</span>" + (libram_is_static_value(id) ? " (will not change today)" : ""));
+		string out = libram_skill.to_string();
+		out += ': <span style="color: ';
+		out += (have_skill(libram_skill) ? 'green' : 'red');
+		out += ';">';
+		out += value;
+		out += '</span> (';
+		out += (libram_is_static_value(id) ? 'will not change today' : ('approaching ' + libram_value_floor(id)));
+		out += ')';
+		print_html(out);
 	}
 }
