@@ -221,8 +221,6 @@ void libram_burn_down_to(int mp)
 
 void main()
 {
-	print("CURRENT average libram summon values.", "blue");
-	print("This may change as you summon uncommons, unless otherwise noted", "blue");
 	int [int] sorted;
 	for(int id = 0; id < LIBRAM_COUNT; ++id)
 	{
@@ -230,6 +228,9 @@ void main()
 	}
 
 	sort sorted by libram_value(value);
+
+	print("CURRENT average libram summon values.", "blue");
+	print("This may change as you summon uncommons, unless otherwise noted", "blue");
 
 	foreach i, id in sorted
 	{
