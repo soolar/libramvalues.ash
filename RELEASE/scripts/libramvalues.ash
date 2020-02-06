@@ -35,6 +35,21 @@ skill libram_id_to_skill(int libram)
 	return $skill[none];
 }
 
+int libram_skill_to_id(skill libram)
+{
+	switch(libram)
+	{
+	case $skill[summon candy heart]: return LIBRAM_CANDY_HEARTS;
+	case $skill[summon party favor]: return LIBRAM_PARTY_FAVORS;
+	case $skill[summon love song]: return LIBRAM_LOVE_SONGS;
+	case $skill[summon brickos]: return LIBRAM_BRICKOS;
+	case $skill[summon dice]: return LIBRAM_DICE;
+	case $skill[summon resolutions]: return LIBRAM_RESOLUTIONS;
+	case $skill[summon taffy]: return LIBRAM_TAFFY;
+	}
+	return -1;
+}
+
 boolean libram_is_static_value(int libram)
 {
 	switch(libram)
@@ -162,18 +177,30 @@ int libram_casting_cost(int casting)
 	return max(1 + casting * (casting - 1) / 2 + mana_cost_modifier(), 1);
 }
 
-int libram_castings_possible(int mp_leftover)
+int libram_castings_possible_with(int mp_total)
 {
-	int available_mp = my_mp() - mp_leftover;
 	int casting = get_property("libramSummons").to_int() + 1;
 	int casts = 0;
-	while(available_mp >= libram_casting_cost(casting))
+	while(mp_total >= libram_casting_cost(casting))
 	{
-		available_mp -= libram_casting_cost(casting);
+		mp_total -= libram_casting_cost(casting);
 		++casting;
 		++casts;
 	}
 	return casts;
+}
+
+float libram_mp_full_restore_approximate_value()
+{
+	skill lib = most_profitable_libram(true, true);
+	int id = libram_skill_to_id(lib);
+	float value = libram_value_floor(id);
+	return value * libram_castings_possible_with(my_maxmp());
+}
+
+int libram_castings_possible(int mp_leftover)
+{
+	return libram_castings_possible_with(my_mp() - mp_leftover);
 }
 
 void libram_burn_down_to(int mp)
